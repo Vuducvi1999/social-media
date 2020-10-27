@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.cursor {
+  cursor: pointer;
+}
+.overlay {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.card {
+  position: static;
+}
+.toSignin {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  transform: translateY(-50%);
+}
+
+.avatar-profile img {
+  width: 50%;
+  height: auto;
+}
+
+@media screen and (min-width: 990px) {
+  .pr-5-md {
+    padding-right: 2rem;
+  }
+  .pl-5-md {
+    padding-left: 2rem;
+  }
+} ;
