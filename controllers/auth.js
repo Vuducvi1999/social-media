@@ -47,6 +47,8 @@ module.exports.signin = (req, res) => {
     return res.status(400).json({ error: "Require email & password" });
   userSchema
     .findOne({ email: user.email })
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
     .then((data) => {
       if (!bcrypt.compareSync(user.password, data.password))
         return res.status(401).json({ error: "Wrong password" });

@@ -47,10 +47,9 @@ const Signin = ({ location, ...props }) => {
       )}
     </>
   );
-  const showLoading = () => (
-    <>{loading ? <h5 className="lead">Loading...</h5> : ""} </>
+  const Loading = () => (
+    <>{loading ? <h2 className="lead bg-light p-5">Loading...</h2> : ""} </>
   );
-
   const form = () => (
     <form onSubmit={Submit}>
       <div className="form-group">
@@ -87,7 +86,7 @@ const Signin = ({ location, ...props }) => {
       <div className="row">
         <div className="col-12">
           <h3 className="mb-5">Sign In</h3>
-          {showLoading()}
+          {Loading()}
           {showError()}
           {showSuccess()}
           {form()}

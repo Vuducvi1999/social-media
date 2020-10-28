@@ -32,9 +32,7 @@ app.use("/api", authRoute);
 app.use("/api", userRoute);
 
 app.use(function (err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    return res.status(401).json({ error: "Require token" });
-  } else return res.status(401).json({ error: "Expired token, login again" });
+  return res.status(401).json({ error: err.message });
 });
 
 const port = PORT || 8000;

@@ -4,6 +4,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import Home from "./core/Home";
 import Menu from "./core/Menu";
 import Users from "./core/Users";
+import CreatePost from "./post/CreatePost";
 import EditProfile from "./user/EditProfile";
 import Profile from "./user/Profile";
 import Signin from "./user/Signin";
@@ -22,6 +23,9 @@ function Routes() {
           <Route path="/users" component={Users} />
           <PrivateRoute path="/edit/:userId">
             <EditProfile />
+          </PrivateRoute>
+          <PrivateRoute path="/post/create">
+            <CreatePost />
           </PrivateRoute>
         </Switch>
       </div>

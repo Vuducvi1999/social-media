@@ -22,6 +22,7 @@ const Users = ({ jwt, allusers, ...props }) => {
                 <div style={{ flexBasis: "20%" }}>
                   <Link to={`/profile/${p._id}`} className="w-100">
                     <div
+                      className="avatar-users"
                       style={{
                         backgroundImage: `url(${API_URL}/user/photo/${p._id})`,
                         backgroundPosition: "center",

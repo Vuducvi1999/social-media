@@ -10,7 +10,9 @@ module.exports.userId = (req, res, next) => {
   const id = req.params.userId;
   userSchema
     .findById(id)
-    .select("-password")
+    .select("-password -photo")
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
     .then((data) => {
       if (!data) return res.status(400).json({ error: "Not found user" });
       data.photo = undefined;
@@ -24,6 +26,8 @@ module.exports.getAllUsers = (req, res) => {
   userSchema
     .find()
     .select("-password -photo")
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
     .then((data) => {
       return res.json(data);
     })
@@ -99,6 +103,7 @@ module.exports.postFollowing = (req, res, next) => {
     .populate("following", "_id name")
     .populate("followers", "_id name")
     .then((data) => {
+      console.log(data);
       next();
     })
     .catch((e) => res.status(400).json({ error: "Follow error 1" }));
@@ -122,6 +127,7 @@ module.exports.postFollowers = (req, res) => {
 
 module.exports.postUnfollowing = (req, res, next) => {
   const { userId, unfollowId } = req.body;
+  console.log(req.body);
   userSchema
     .findByIdAndUpdate(
       userId,

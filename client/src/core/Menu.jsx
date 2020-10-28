@@ -42,6 +42,9 @@ const Menu = ({ jwt, dispatch, ...props }) => {
       )}
       {jwt.user._id && (
         <>
+          <NavLink to={`/post/create`} className="nav-link p-3">
+            Create Post
+          </NavLink>
           <NavLink to={`/profile/${jwt.user._id}`} className="nav-link p-3">
             Profile
           </NavLink>

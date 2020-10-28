@@ -14,26 +14,14 @@ const Signup = ({ users, ...props }) => {
     photo: "",
     about: "",
     success: false,
-    // formSubmit: "",
     loading: false,
   };
 
   const [value, setValue] = useState(init);
-  const {
-    email,
-    // formSubmit,
-    password,
-    loading,
-    error,
-    success,
-    name,
-    about,
-  } = value;
-  const [formSubmit, setformsubmit] = useState(new FormData(0));
+  let { email, password, loading, error, success, name, about } = value;
 
-  // useEffect(() => {
-  //   setValue({ ...value, formSubmit: new FormData() });
-  // }, []);
+  const [formSubmit, setformSubmit] = useState(null);
+  useEffect(() => setformSubmit(new FormData()), []);
 
   const Change = (e) => {
     const name = e.target.name;
@@ -82,8 +70,9 @@ const Signup = ({ users, ...props }) => {
     </>
   );
   const Loading = () => (
-    <>{loading ? <h4 className="lead">Loading...</h4> : ""} </>
+    <>{loading ? <h2 className="lead bg-light p-5">Loading...</h2> : ""} </>
   );
+
   const form = () => (
     <form onSubmit={Submit}>
       <div className="form-group">
@@ -154,7 +143,7 @@ const Signup = ({ users, ...props }) => {
     <div className="container">
       <div className="row">
         <div className="col-12">
-          <h3 className="mb-5">Sign Up</h3>
+          <h3 className="mb-5">{"Sign Up"}</h3>
           {Loading()}
           {showError()}
           {showSuccess()}

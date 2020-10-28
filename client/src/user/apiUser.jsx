@@ -57,6 +57,7 @@ export const followUser = (userId, followId, token) =>
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-type": "application/json",
     },
     body: JSON.stringify({ userId, followId }),
   })
@@ -64,10 +65,11 @@ export const followUser = (userId, followId, token) =>
     .catch((e) => console.log(e));
 
 export const unfollowUser = (userId, unfollowId, token) =>
-  fetch(`${API_URL}/user/follow`, {
+  fetch(`${API_URL}/user/unfollow`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-type": "application/json",
     },
     body: JSON.stringify({ userId, unfollowId }),
   })
