@@ -17,8 +17,8 @@ const Signup = ({ users, ...props }) => {
     loading: false,
   };
 
-  const [value, setValue] = useState(init);
-  let { email, password, loading, error, success, name, about } = value;
+  const [values, setValue] = useState(init);
+  let { email, password, loading, error, success, name, about } = values;
 
   const [formSubmit, setformSubmit] = useState(null);
   useEffect(() => setformSubmit(new FormData()), []);
@@ -27,17 +27,19 @@ const Signup = ({ users, ...props }) => {
     const name = e.target.name;
     const value = name === "photo" ? e.target.files[0] : e.target.value;
     formSubmit.set(name, value);
-    setValue({ ...value, [name]: value });
+    setValue({ ...values, [name]: value });
+    console.log(values);
   };
 
   const Submit = (e) => {
     e.preventDefault();
-    setValue({ ...value, loading: true });
+    console.log(values);
+    setValue({ ...values, loading: true });
     signupAPI(formSubmit)
       .then((data) => {
         console.log(data);
         if (data.error)
-          setValue({ ...value, loading: false, error: data.error });
+          setValue({ ...values, loading: false, error: data.error });
         else {
           props.dispatch({ type: GET_ALL_USER, payload: [...users, data] });
           setValue({ ...init, success: true });

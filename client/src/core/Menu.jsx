@@ -1,18 +1,31 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, NavLink, withRouter } from "react-router-dom";
-import { GET_ALL_USER, GET_USER } from "../redux/actions/actionTypes";
+import {
+  GET_ALL_POST,
+  GET_ALL_USER,
+  GET_USER,
+} from "../redux/actions/actionTypes";
 import { getUsers } from "../user/apiUser";
+import { getPosts } from "./../post/apiPost";
 
 const Menu = ({ jwt, dispatch, ...props }) => {
   useEffect(() => {
+    // get users redux
     getUsers()
       .then((data) => {
         dispatch({ type: GET_ALL_USER, payload: data });
       })
       .catch((e) => console.log(e));
+
+    // get posts redux
+    getPosts()
+      .then((data) => {
+        dispatch({ type: GET_ALL_POST, payload: data });
+      })
+      .catch((e) => console.log(e));
+
     if (localStorage.getItem("jwt")) {
-      console.log(JSON.parse(localStorage.getItem("jwt")));
       dispatch({
         type: GET_USER,
         payload: JSON.parse(localStorage.getItem("jwt")),

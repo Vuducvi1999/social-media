@@ -75,3 +75,10 @@ export const unfollowUser = (userId, unfollowId, token) =>
   })
     .then((res) => res.json())
     .catch((e) => console.log(e));
+
+export const getUserPosts = (id) =>
+  fetch(`${API_URL}/post/by/${id}`, {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { GET_USER } from "../redux/actions/actionTypes";
@@ -19,6 +19,12 @@ const EditProfile = ({ jwt, ...props }) => {
   const [value, setValue] = useState(init);
   const { email, password, error, success, name, about } = value;
   const { user, token } = jwt;
+
+  useEffect(() => {
+    setValue({ ...value, name: jwt.user.name, about: jwt.user.about });
+    formSubmit("name", jwt.user.name);
+    formSubmit("about", jwt.user.about);
+  }, [jwt]);
 
   const Change = (e) => {
     const name = e.target.name;

@@ -18,7 +18,9 @@ const postSchema = new mongoose.Schema(
     postedBy: {
       type: mongoose.Types.ObjectId,
       ref: "user",
+      required: "User Posted require",
     },
+    likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
   },
   { timestamps: true }
 );

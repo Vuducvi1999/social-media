@@ -1,11 +1,12 @@
 const { postSchema } = require("../models/post");
 const formidable = require("formidable");
 const fs = require("fs");
+const path = require("path");
 
 module.exports.postId = (req, res, next) => {
   postSchema
     .findById(req.params.postId)
-    .populate("postedBy")
+    .populate("postedBy", "_id name")
     .then((data) => {
       req.post = data;
       next();
@@ -19,8 +20,9 @@ module.exports.createPost = (req, res) => {
   form.parse(req, (err, fileds, files) => {
     if (err) return res.status(400).json({ error: "Image error" });
     const post = new postSchema(fileds);
-    post.postedBy = req.user;
     if (files.photo) {
+      if (files.photo.size < 1000000)
+        return res.status(400).json({ error: "Photo should less than 1MB" });
       post.photo.data = fs.readFileSync(files.photo.path);
       post.photo.contentType = files.photo.type;
     }
@@ -32,23 +34,31 @@ module.exports.createPost = (req, res) => {
       })
       .catch((err) => {
         try {
-          const { title, body } = err.errors;
-          switch (title.properties.type) {
-            case "required":
-              return res.status(400).json({ error: "Title require" });
-            case "minlength":
-              return res.status(400).json({ error: "Title min length is 5" });
-            case "maxlength":
-              return res.status(400).json({ error: "Title max length is 150" });
-          }
-          switch (body.properties.type) {
-            case "required":
-              return res.status(400).json({ error: "Body require" });
-            case "minlength":
-              return res.status(400).json({ error: "Body min length is 5" });
-            case "maxlength":
-              return res.status(400).json({ error: "Body max length is 2000" });
-          }
+          const { title, body, postedBy } = err.errors;
+          if (title)
+            switch (title.properties.type) {
+              case "required":
+                return res.status(400).json({ error: "Title require" });
+              case "minlength":
+                return res.status(400).json({ error: "Title min length is 5" });
+              case "maxlength":
+                return res
+                  .status(400)
+                  .json({ error: "Title max length is 150" });
+            }
+          if (body)
+            switch (body.properties.type) {
+              case "required":
+                return res.status(400).json({ error: "Body require" });
+              case "minlength":
+                return res.status(400).json({ error: "Body min length is 5" });
+              case "maxlength":
+                return res
+                  .status(400)
+                  .json({ error: "Body max length is 2000" });
+            }
+          if (postedBy)
+            return res.status(400).json({ error: "User Posted require" });
         } catch (error) {
           return res.status(400).json({ error: "Fail create post" });
         }
@@ -60,7 +70,8 @@ module.exports.getPosts = (req, res) => {
   postSchema
     .find()
     .populate("postedBy", "_id name email")
-    .select("_id title body postedBy")
+    .select("-photo")
+    .sort({ createdAt: "desc" })
     .then((data) => res.json(data))
     .catch((err) => res.status(400).json({ error: "Fail get post" }));
 };
@@ -69,6 +80,8 @@ module.exports.postedByUser = (req, res) => {
   postSchema
     .find({ postedBy: req.user._id })
     .populate("postedBy", "_id name email")
+    .select("-photo")
+    .sort({ createdAt: "desc" })
     .then((data) => {
       return res.json(data);
     })
@@ -87,12 +100,72 @@ module.exports.deletePost = (req, res) => {
 };
 
 module.exports.updatePost = (req, res) => {
-  console.log(req.post);
   postSchema
-    .findById(req.post._id)
+    .findById(req.params.postId)
     .then((data) => {
-      const post = Object.assign(data, req.body);
-      post.save().then((data) => res.json("updated"));
+      const form = new formidable.IncomingForm();
+      form.parse(req, (err, fields, files) => {
+        if (err) return res.status(400).json({ error: "Image error" });
+        if (!fields.title || !fields.body)
+          return res.status(400).json({ error: "Title & Body require" });
+        const post = Object.assign(data, fields);
+        if (files.photo) {
+          if (files.photo.size < 1000000)
+            return res
+              .status(400)
+              .json({ error: "Photo should less than 1MB" });
+          post.photo.data = fs.readFileSync(files.photo.path);
+          post.photo.contentType = files.photo.type;
+        }
+
+        post
+          .save()
+          .then((data) => {
+            return res.json(data);
+          })
+          .catch((err) => {
+            try {
+              const { title, body, postedBy } = err.errors;
+              if (title)
+                switch (title.properties.type) {
+                  case "required":
+                    return res.status(400).json({ error: "Title require" });
+                  case "minlength":
+                    return res
+                      .status(400)
+                      .json({ error: "Title min length is 5" });
+                  case "maxlength":
+                    return res
+                      .status(400)
+                      .json({ error: "Title max length is 150" });
+                }
+              if (body)
+                switch (body.properties.type) {
+                  case "required":
+                    return res.status(400).json({ error: "Body require" });
+                  case "minlength":
+                    return res
+                      .status(400)
+                      .json({ error: "Body min length is 5" });
+                  case "maxlength":
+                    return res
+                      .status(400)
+                      .json({ error: "Body max length is 2000" });
+                }
+              if (postedBy)
+                return res.status(400).json({ error: "User Posted require" });
+            } catch (error) {
+              return res.status(400).json({ error: "Fail create post" });
+            }
+          });
+      });
     })
-    .catch((e) => res.status(400).json({ error: "Can not update post" }));
+    .catch((e) => console.log(e));
+};
+
+module.exports.getPhotoPost = (req, res) => {
+  const post = req.post;
+  // res.json(post.photo);
+  if (post.photo.contentType) return res.send(post.photo.data);
+  return res.sendFile(path.join(__dirname + "/../public/default.jpg"));
 };

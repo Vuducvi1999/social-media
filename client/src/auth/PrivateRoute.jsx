@@ -1,14 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
+import { Auth } from "./index";
 
-const PrivateRoute = ({ jwt, children, ...props }) => {
-  const { user } = jwt;
+const PrivateRoute = ({ children, ...rest }) => {
   return (
     <Route
-      {...props}
-      render={() =>
-        user._id ? (
+      {...rest}
+      render={(props) =>
+        Auth() ? (
           children
         ) : (
           <Redirect
@@ -23,8 +22,8 @@ const PrivateRoute = ({ jwt, children, ...props }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  jwt: state.jwt,
-});
+// const mapStateToProps = (state) => ({
+//   jwt: state.jwt,
+// });
 
-export default connect(mapStateToProps, null)(PrivateRoute);
+export default PrivateRoute;

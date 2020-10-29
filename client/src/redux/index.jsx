@@ -1,10 +1,12 @@
 import { combineReducers, createStore } from "redux";
 import { jwtReducer } from "./reducers/jwtReducer";
 import { usersReducer } from "./reducers/usersReducer";
+import { postsReducer } from "./reducers/postsReducer";
 
 const reducers = combineReducers({
   jwt: jwtReducer,
   users: usersReducer,
+  posts: postsReducer,
 });
 
 export const store = createStore(

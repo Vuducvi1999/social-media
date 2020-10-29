@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { API_URL } from "../config";
+import { CalcTime } from "../user/uuid";
 
 const Users = ({ jwt, allusers, ...props }) => {
   const listUser = (pos) => {
@@ -39,13 +40,7 @@ const Users = ({ jwt, allusers, ...props }) => {
                     <small className="about-user">
                       <p className="small m-0">
                         join&nbsp;
-                        {Math.floor(
-                          (new Date() - new Date(p.createdAt)) / 86400000
-                        ) > 0
-                          ? Math.floor(
-                              (new Date() - new Date(p.createdAt)) / 86400000
-                            ).toString() + " day ago"
-                          : "today"}
+                        {CalcTime(p.createdAt)}
                       </p>
                     </small>
                   </div>

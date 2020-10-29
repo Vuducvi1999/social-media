@@ -43,7 +43,28 @@
   transform: translateY(-50%);
 }
 
-.avatar-profile {
+.profile-info {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-family: cursive, sans-serif;
+}
+
+.name-profile,
+.email-profile,
+.joined-profile,
+.about-profile {
+  font-family: monospace;
+}
+
+.button-container {
+  width: 70%;
+}
+
+.about-profile {
+  margin: 1rem 0;
+  border-top: 1px solid silver;
+  border-bottom: 1px solid silver;
 }
 
 .avatar-profile img {
@@ -72,8 +93,7 @@
 }
 
 .contain-litle-avatar {
-  flex-basis: 30%;
-  width: 80%;
+  flex-basis: 20%;
   margin: 0.3rem 0;
 }
 
@@ -86,9 +106,16 @@
   margin: 0;
   font-size: 1.4rem;
   text-align: center;
-  flex-grow: 1;
   color: #009688 !important;
   font-weight: 600;
+}
+
+.content-litle-avatar {
+  display: block;
+  border-radius: 50%;
+  width: 50%;
+  background-size: cover;
+  background-position: center;
 }
 
 .content-litle-avatar:before {
@@ -98,8 +125,13 @@
 }
 
 .box-navigator {
-  height: 50vh;
+  max-height: 50vh;
   overflow-y: auto;
+  margin-left: 1rem;
+}
+
+.list-group-item {
+  padding: 0.3rem;
 }
 
 .box-navigator::-webkit-scrollbar-track {
@@ -119,6 +151,77 @@
   background-color: #555;
 }
 
+.img-post {
+  width: 100%;
+  padding-top: 60%;
+  background-position: center;
+  background-size: cover;
+  border: 0.4rem solid #fff;
+}
+
+textarea {
+  line-height: 1.2;
+}
+.card-body {
+  padding: 0.6rem 1rem 0 1rem;
+}
+
+.card-text {
+  white-space: pre-line;
+}
+
+.post-footer {
+  border-top: 1px solid silver;
+  padding-top: 0.3rem;
+}
+.container-little-post {
+  border-radius: 0;
+}
+
+.contain-litle-post {
+  flex-basis: 30%;
+}
+.created-post {
+  font-size: 0.6rem;
+  text-align: left;
+}
+
+.container-title {
+  height: 60vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.container-title img {
+  position: absolute;
+
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.container-body {
+  white-space: pre-line;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.loading {
+  background-color: silver;
+}
+
+.container-postedBy {
+  background-color: rgb(255, 252, 210);
+  padding: 0.2rem;
+  padding-left: 0.5rem;
+  font-style: italic;
+}
+.button-container-post {
+  width: 50%;
+}
+
 @media screen and (min-width: 990px) {
   .pr-5-md {
     padding-right: 2rem;
@@ -136,7 +239,13 @@
     margin-right: 20%;
   }
   .box-navigator {
-    height: 80vh;
+    max-height: 80vh;
     overflow-y: auto;
+  }
+  .content-litle-avatar {
+    width: 80%;
+  }
+  .list-group-item {
+    padding: 0rem;
   }
 }
