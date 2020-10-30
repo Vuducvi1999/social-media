@@ -11,6 +11,7 @@ const {
   postFollowers,
   postUnfollowing,
   postUnfollowers,
+  find,
 } = require("../controllers/user");
 
 route.get("/user/users", getAllUsers);
@@ -21,5 +22,6 @@ route.delete("/user/unfollow", requireSignin, postUnfollowing, postUnfollowers);
 route.delete("/user/delete/:userId", requireSignin, userId, deleteUser);
 route.get("/user/:userId", userId, (req, res) => res.json(req.user));
 route.get("/user/photo/:userId", userId, getPhoto);
+route.post("/user/find", find);
 
 module.exports.userRoute = route;

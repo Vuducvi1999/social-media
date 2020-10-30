@@ -17,6 +17,7 @@ const CreatePost = ({ jwt, ...props }) => {
   const { title, body, success, error, loading } = values;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setformData(new FormData());
   }, []);
 
@@ -81,6 +82,7 @@ const CreatePost = ({ jwt, ...props }) => {
             Body
           </label>
           <textarea
+            rows="8"
             name="body"
             className="form-control"
             onChange={Change}

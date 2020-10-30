@@ -34,7 +34,7 @@ const Menu = ({ jwt, dispatch, ...props }) => {
   }, [props.match]);
 
   return (
-    <nav className="nav nav-tabs bg-primary justify-content-start mb-5">
+    <nav className="nav nav-tabs bg-primary justify-content-start mb-5 pos-stick">
       <NavLink exact={true} className="nav-link p-3" to="/">
         Home
       </NavLink>

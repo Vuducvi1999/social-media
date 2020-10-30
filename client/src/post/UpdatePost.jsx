@@ -18,6 +18,7 @@ const UpdatePost = ({ jwt, ...props }) => {
   const { title, body, success, error, loading } = values;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const currentPost = props.posts.find(
       (p) => p._id === props.match.params.postId
     );

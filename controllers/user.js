@@ -26,6 +26,7 @@ module.exports.getAllUsers = (req, res) => {
   userSchema
     .find()
     .select("-password -photo")
+    .sort({ createdAt: -1 })
     .populate("following", "_id name")
     .populate("followers", "_id name")
     .then((data) => {
@@ -53,6 +54,10 @@ module.exports.updateUser = (req, res) => {
         }
         const user = Object.assign(req.user, fields);
         if (files.photo) {
+          if (files.photo.size > 1000000)
+            return res
+              .status(400)
+              .json({ error: "Photo should less than 1MB" });
           user.photo.data = fs.readFileSync(files.photo.path);
           user.photo.contentType = files.photo.type;
         }
@@ -156,4 +161,21 @@ module.exports.postUnfollowers = (req, res) => {
       return res.json({ followers: data });
     })
     .catch((e) => res.status(400).json({ error: "Follow error 2" }));
+};
+
+module.exports.find = (req, res) => {
+  const str = req.body.find;
+  userSchema
+    .find({
+      $or: [
+        { name: { $regex: `${str}`, $options: "i" } },
+        { email: { $regex: `${str}`, $options: "i" } },
+      ],
+    })
+    .select("-password -photo")
+    .sort({ createdAt: -1 })
+    .populate("following", "_id name")
+    .populate("followers", "_id name")
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Find error" }));
 };

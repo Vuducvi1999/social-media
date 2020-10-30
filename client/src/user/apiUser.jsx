@@ -82,3 +82,14 @@ export const getUserPosts = (id) =>
   })
     .then((res) => res.json())
     .catch((e) => console.log(e));
+
+export const findUser = (find) =>
+  fetch(`${API_URL}/user/find`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ find }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));

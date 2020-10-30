@@ -21,7 +21,7 @@ module.exports.createPost = (req, res) => {
     if (err) return res.status(400).json({ error: "Image error" });
     const post = new postSchema(fileds);
     if (files.photo) {
-      if (files.photo.size < 1000000)
+      if (files.photo.size > 1000000)
         return res.status(400).json({ error: "Photo should less than 1MB" });
       post.photo.data = fs.readFileSync(files.photo.path);
       post.photo.contentType = files.photo.type;
@@ -69,7 +69,11 @@ module.exports.createPost = (req, res) => {
 module.exports.getPosts = (req, res) => {
   postSchema
     .find()
-    .populate("postedBy", "_id name email")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .populate("postedBy", "_id name ")
     .select("-photo")
     .sort({ createdAt: "desc" })
     .then((data) => res.json(data))
@@ -80,7 +84,7 @@ module.exports.postedByUser = (req, res) => {
   postSchema
     .find({ postedBy: req.user._id })
     .populate("postedBy", "_id name email")
-    .select("-photo")
+    .select("-photo -comments")
     .sort({ createdAt: "desc" })
     .then((data) => {
       return res.json(data);
@@ -110,7 +114,7 @@ module.exports.updatePost = (req, res) => {
           return res.status(400).json({ error: "Title & Body require" });
         const post = Object.assign(data, fields);
         if (files.photo) {
-          if (files.photo.size < 1000000)
+          if (files.photo.size > 1000000)
             return res
               .status(400)
               .json({ error: "Photo should less than 1MB" });
@@ -168,4 +172,95 @@ module.exports.getPhotoPost = (req, res) => {
   // res.json(post.photo);
   if (post.photo.contentType) return res.send(post.photo.data);
   return res.sendFile(path.join(__dirname + "/../public/default.jpg"));
+};
+
+module.exports.like = (req, res) => {
+  postSchema
+    .findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { likes: req.body.userId },
+      },
+      { new: true }
+    )
+    .select("-photo")
+    .populate("postedBy", "_id name")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Like error" }));
+};
+
+module.exports.unlike = (req, res) => {
+  postSchema
+    .findByIdAndUpdate(
+      req.body.postId,
+      {
+        $pull: { likes: req.body.userId },
+      },
+      { new: true }
+    )
+    .select("-photo")
+    .populate("postedBy", "_id name")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Unlike error" }));
+};
+
+module.exports.comment = (req, res) => {
+  postSchema
+    .findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { comments: { text: req.body.text, user: req.body.userId } },
+      },
+      { new: true }
+    )
+    .select("-photo")
+    .populate("postedBy", "_id name")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Comment error" }));
+};
+
+module.exports.uncomment = (req, res) => {
+  postSchema
+    .findByIdAndUpdate(
+      req.body.postId,
+      {
+        $pull: { comments: { text: req.body.text, user: req.body.userId } },
+      },
+      { new: true }
+    )
+    .select("-photo")
+    .populate("postedBy", "_id name")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Uncomment error" }));
+};
+
+module.exports.find = (req, res) => {
+  const str = req.body.find;
+  postSchema
+    .find({ title: { $regex: `${str}`, $options: "i" } })
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "_id name" },
+    })
+    .populate("postedBy", "_id name ")
+    .select("-photo")
+    .sort({ createdAt: "desc" })
+    .then((data) => res.json(data))
+    .catch((e) => res.status(400).json({ error: "Find error" }));
 };

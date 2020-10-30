@@ -19,6 +19,7 @@ const Profile = ({ match, jwt, ...props }) => {
   useEffect(() => window.scrollTo(0, 0), []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     // get user hiện tại thông qua match.params
     getUser(match.params.userId)
       .then((data) => {
@@ -151,7 +152,7 @@ const Profile = ({ match, jwt, ...props }) => {
       <div className="profile-info">
         About:{" "}
         {user.about ? (
-          <div className="span about-profile">{user.about}</div>
+          <div className="span about-profile card-text">{user.about}</div>
         ) : (
           <span className="not-found  ">Not found user's about</span>
         )}
@@ -220,8 +221,8 @@ const Profile = ({ match, jwt, ...props }) => {
             </a>
             <ul className="list-group box-navigator">
               {userPosts.length > 0 &&
-                userPosts.slice(0, 51).map((p) => (
-                  <li key={uuid()} className=" d-flex align-items-center">
+                userPosts.slice(0, 50).map((p) => (
+                  <li key={uuid()} className=" d-flex ">
                     <div className="contain-litle-avatar contain-litle-post">
                       <Link
                         to={`/post/${p._id}`}
@@ -241,7 +242,7 @@ const Profile = ({ match, jwt, ...props }) => {
                 ))}
               {userPosts && userPosts.length > 50 && (
                 <div className="alert alert-warning">
-                  Reach maximum 50 items
+                  Reach maximum 50 posts
                 </div>
               )}
             </ul>
@@ -257,7 +258,7 @@ const Profile = ({ match, jwt, ...props }) => {
             </a>
             <ul className="list-group box-navigator">
               {user.following &&
-                user.following.slice(0, 51).map((p) => (
+                user.following.slice(0, 50).map((p) => (
                   <li key={uuid()} className=" d-flex align-items-center">
                     <div className="contain-litle-avatar">
                       <Link
@@ -275,7 +276,7 @@ const Profile = ({ match, jwt, ...props }) => {
                 ))}
               {user.following && user.following.length > 50 && (
                 <div className="alert alert-warning">
-                  Reach maximum 50 items
+                  Reach maximum 50 following
                 </div>
               )}
             </ul>
@@ -289,10 +290,9 @@ const Profile = ({ match, jwt, ...props }) => {
                 ({user.followers && user.followers.length})
               </span>
             </a>
-            {/* <div className="box-navigator"></div> */}
             <ul className="list-group box-navigator">
               {user.followers &&
-                user.followers.slice(0, 51).map((p) => (
+                user.followers.slice(0, 50).map((p) => (
                   <li key={uuid()} className=" d-flex align-items-center">
                     <div className="contain-litle-avatar">
                       <Link
@@ -310,7 +310,7 @@ const Profile = ({ match, jwt, ...props }) => {
                 ))}
               {user.followers && user.followers.length > 50 && (
                 <div className="alert alert-warning">
-                  Reach maximum 50 items
+                  Reach maximum 50 followers
                 </div>
               )}
             </ul>
@@ -337,6 +337,7 @@ const Profile = ({ match, jwt, ...props }) => {
             {Action()}
           </>
         )}
+        <div className="col-12" style={{ marginBottom: "4rem" }}></div>
       </div>
     </div>
   );

@@ -23,6 +23,8 @@ module.exports.signup = (req, res) => {
     const newUser = new userSchema(fields);
 
     if (files.photo) {
+      if (files.photo.size > 1000000)
+        return res.status(400).json({ error: "Photo should less than 1MB" });
       newUser.photo.data = fs.readFileSync(files.photo.path);
       newUser.photo.contentType = files.photo.type;
     }

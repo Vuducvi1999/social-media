@@ -21,6 +21,16 @@ const postSchema = new mongoose.Schema(
       required: "User Posted require",
     },
     likes: [{ type: mongoose.Types.ObjectId, ref: "user" }],
+    comments: [
+      {
+        text: String,
+        createdAt: { type: Date, default: Date.now },
+        user: {
+          type: mongoose.Types.ObjectId,
+          ref: "user",
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

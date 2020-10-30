@@ -36,3 +36,62 @@ export const deletePost = (id, token) =>
   })
     .then((res) => res.json())
     .catch((e) => console.log(e));
+
+export const likePost = (userId, postId, token) =>
+  fetch(`${API_URL}/post/like`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userId, postId }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+export const unlikePost = (userId, postId, token) =>
+  fetch(`${API_URL}/post/unlike`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userId, postId }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+export const commentPost = (userId, postId, text, token) =>
+  fetch(`${API_URL}/post/comment`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ text, userId, postId }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+export const uncommentPost = (userId, postId, text, token) =>
+  fetch(`${API_URL}/post/uncomment`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ text, userId, postId }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+export const findPost = (find) =>
+  fetch(`${API_URL}/post/find`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ find }),
+  })
+    .then((res) => res.json())
+    .catch((e) => console.log(e));

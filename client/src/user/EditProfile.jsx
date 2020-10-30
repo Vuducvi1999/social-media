@@ -21,9 +21,10 @@ const EditProfile = ({ jwt, ...props }) => {
   const { user, token } = jwt;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     setValue({ ...value, name: jwt.user.name, about: jwt.user.about });
-    formSubmit("name", jwt.user.name);
-    formSubmit("about", jwt.user.about);
+    formSubmit.set("name", jwt.user.name);
+    formSubmit.set("about", jwt.user.about);
   }, [jwt]);
 
   const Change = (e) => {
