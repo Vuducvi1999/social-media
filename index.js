@@ -1,11 +1,11 @@
+dotenv.config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const { PORT, MONGO_URI } = require("./config");
 const dotenv = require("dotenv");
-dotenv.config();
+const path = require("path");
 
 // require route
 const { postRoute } = require("./routes/post");
@@ -13,7 +13,7 @@ const { authRoute } = require("./routes/auth");
 const { userRoute } = require("./routes/user");
 
 mongoose
-  .connect(MONGO_URI, {
+  .connect(process.env.MONGO_URI, {
     useFindAndModify: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -50,6 +50,6 @@ app.listen(port, () => {
   console.log(`Server start port ${port}`);
 });
 
-// app.get("/", (req, res) => {
-//   res.send("hello world");
-// });
+app.get("/", (req, res) => {
+  res.send("hello world");
+});
