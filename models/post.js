@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema(
     body: {
       type: String,
       required: "Body require",
-      maxlength: 2000,
+      maxlength: 5000,
       minlength: 5,
     },
     photo: { data: Buffer, contentType: String },

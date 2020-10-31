@@ -130,8 +130,8 @@ const EditProfile = ({ jwt, ...props }) => {
         <label htmlFor="" className="text-muted">
           About yourself
         </label>
-        <input
-          type="text"
+        <textarea
+          rows="7"
           name="about"
           className="form-control"
           value={about}
