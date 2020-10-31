@@ -4,6 +4,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { PORT, MONGO_URI } = require("./config");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // require route
 const { postRoute } = require("./routes/post");
