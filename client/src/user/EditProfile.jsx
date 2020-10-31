@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { GET_USER } from "../redux/actions/actionTypes";
 import { updateUser } from "./apiUser";
 
@@ -50,9 +50,21 @@ const EditProfile = ({ jwt, ...props }) => {
       .catch((e) => console.log(e));
   };
 
-  const showError = () => (
-    <> {error ? <div className="alert alert-danger">{error}</div> : ""} </>
-  );
+  const showError = () => {
+    if (error)
+      return error === "jwt expired" ? (
+        <>
+          {
+            <div className="alert alert-danger">
+              {error},try <Link to="/signin">signin</Link> again
+            </div>
+          }
+        </>
+      ) : (
+        <> {error ? <div className="alert alert-danger">{error}</div> : ""} </>
+      );
+  };
+
   const showSuccess = () => (
     <>
       {success ? (

@@ -19,6 +19,7 @@ const Post = ({ posts, match, ...props }) => {
   const [signinToComment, setSigninToComment] = useState(false);
   const [text, setText] = useState("");
   const [showImg, setShowImg] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,21 +77,25 @@ const Post = ({ posts, match, ...props }) => {
     if (!post.likes.find((p) => p === props.jwt.user._id))
       likePost(props.jwt.user._id, post._id, props.jwt.token)
         .then((data) => {
-          setPost(data);
+          if (data.error) return setError(data.error);
+          else return setPost(data);
         })
         .catch((e) => console.log(e));
     else
       unlikePost(props.jwt.user._id, post._id, props.jwt.token)
         .then((data) => {
-          // console.log(data);
-          setPost(data);
+          if (data.error) return setError(data.error);
+          else return setPost(data);
         })
         .catch((e) => console.log(e));
   };
 
   const Uncomment = (text) => {
     uncommentPost(props.jwt.user._id, post._id, text, props.jwt.token)
-      .then((data) => setPost(data))
+      .then((data) => {
+        if (data.error) return setError(data.error);
+        else return setPost(data);
+      })
       .catch((e) => console.log(e));
   };
 
@@ -98,12 +103,15 @@ const Post = ({ posts, match, ...props }) => {
     e.preventDefault();
     if (props.jwt && !props.jwt.user._id) return setSigninToComment(true);
 
-    commentPost(props.jwt.user._id, post._id, text, props.jwt.token)
-      .then((data) => {
-        setText("");
-        setPost(data);
-      })
-      .catch((e) => console.log(e));
+    commentPost(props.jwt.user._id, post._id, text, props.jwt.token).then(
+      (data) => {
+        if (data.error) return setError(data.error);
+        else {
+          setText("");
+          return setPost(data);
+        }
+      }
+    );
   };
 
   const formComment = () => (
@@ -167,6 +175,11 @@ const Post = ({ posts, match, ...props }) => {
             </span>
             {redirectSigninLike()}
           </div>
+          {error && (
+            <div className="alert alert-danger my-3 mb-0">
+              {error}, try <Link to="/signin">signin</Link> again
+            </div>
+          )}
         </div>
         <div className="col-12">
           <div className="container-body bg-white p-3 ">
@@ -201,13 +214,21 @@ const Post = ({ posts, match, ...props }) => {
                   className="btn btn-raised btn-danger"
                   onClick={() => {
                     const confirm = window.confirm("Delete this post?");
-                    if (confirm) deletePost(post._id, props.jwt.token);
-                    getPosts()
-                      .then((data) => {
-                        props.dispatch({ type: GET_ALL_POST, payload: data });
-                      })
-                      .catch((e) => console.log(e));
-                    props.history.push("/");
+                    if (confirm)
+                      deletePost(post._id, props.jwt.token).then((data) => {
+                        if (data.error) setError(data.error);
+                        else {
+                          getPosts()
+                            .then((data) => {
+                              props.dispatch({
+                                type: GET_ALL_POST,
+                                payload: data,
+                              });
+                            })
+                            .catch((e) => console.log(e));
+                          props.history.push("/");
+                        }
+                      });
                   }}
                 >
                   Delete post

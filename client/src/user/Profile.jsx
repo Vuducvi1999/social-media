@@ -55,18 +55,28 @@ const Profile = ({ match, jwt, ...props }) => {
   const deleteAcc = () => {
     const confirm = window.confirm("Do you want to delete account?");
     if (confirm) {
-      deleteUser(user._id, jwt.token);
-      props.dispatch({ type: GET_USER, payload: { token: "", user: {} } });
-      localStorage.removeItem("jwt");
-      props.history.push("/");
+      deleteUser(user._id, jwt.token)
+        .then((data) => {
+          if (data.error) {
+            return setError(data.error);
+          } else {
+            props.dispatch({
+              type: GET_USER,
+              payload: { token: "", user: {} },
+            });
+            localStorage.removeItem("jwt");
+            props.history.push("/");
+          }
+        })
+        .catch((e) => console.log(e));
     }
   };
 
   const Follow = () => {
     setLoading(true);
     followUser(jwt.user._id, user._id, jwt.token).then((data) => {
+      if (data.error) return setError(data.error);
       getUser(jwt.user._id).then((data) => {
-        if (data.err) return;
         localStorage.setItem(
           "jwt",
           JSON.stringify({
@@ -88,6 +98,7 @@ const Profile = ({ match, jwt, ...props }) => {
   const Unfollow = () => {
     setLoading(true);
     unfollowUser(jwt.user._id, user._id, jwt.token).then((data) => {
+      if (data.error) return setError(data.error);
       getUser(jwt.user._id).then((data) => {
         if (data.err) return;
         localStorage.setItem(
@@ -327,9 +338,17 @@ const Profile = ({ match, jwt, ...props }) => {
           <h2>Profile</h2>
         </div>
         {error ? (
-          <div className="col-12">
-            <div className="alert alert-danger">{error}</div>
-          </div>
+          error === "jwt expired" ? (
+            <div className="col-12">
+              <div className="alert alert-danger">
+                {error}, try <Link to="/login">login</Link> again
+              </div>
+            </div>
+          ) : (
+            <div className="col-12">
+              <div className="alert alert-danger">{error}</div>
+            </div>
+          )
         ) : (
           <>
             {Avatar()}

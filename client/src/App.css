@@ -214,7 +214,7 @@ textarea {
   font-size: 1.5rem;
 }
 .container-title {
-  height: 60vh;
+  height: 30vh;
   position: relative;
   overflow: hidden;
 }
@@ -305,6 +305,9 @@ textarea {
     width: -webkit-fill-available;
     height: auto;
   } */
+  .container-title {
+    height: 40vh;
+  }
 }
 @media screen and (min-width: 990px) {
   .pr-5-md {
@@ -341,6 +344,9 @@ textarea {
   .contain-full-img {
     padding: 2rem;
   }
+  .container-title {
+    height: 50vh;
+  }
 }
 
 @media (min-width: 992px) {
@@ -349,5 +355,8 @@ textarea {
   }
   .close-img {
     font-size: 3rem;
+  }
+  .container-title {
+    height: 60vh;
   }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { postPost } from "./apiPost";
 
 const CreatePost = ({ jwt, ...props }) => {
@@ -41,9 +42,20 @@ const CreatePost = ({ jwt, ...props }) => {
       .catch((e) => console.log(e));
   };
 
-  const Error = () => (
-    <>{error && <div className="alert alert-danger">{error}</div>} </>
-  );
+  const Error = () => {
+    if (error)
+      return error === "jwt expired" ? (
+        <>
+          {
+            <div className="alert alert-danger">
+              {error}, try <Link to="/signin">signin</Link> again
+            </div>
+          }
+        </>
+      ) : (
+        <div className="alert alert-danger">{error}</div>
+      );
+  };
   const Success = () => (
     <>{success && <div className="alert alert-success">Post created</div>} </>
   );

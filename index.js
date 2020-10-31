@@ -35,6 +35,13 @@ app.use(function (err, req, res, next) {
   return res.status(401).json({ error: err.message });
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client/build/index.html"));
+  });
+}
+
 const port = PORT || 8000;
 
 app.listen(port, () => {
