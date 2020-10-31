@@ -64,7 +64,7 @@ const Signup = ({ users, ...props }) => {
               </Link>
             </div>
           </div>
-          <div className="overlay"></div>
+          <div className="overlay-signup"></div>
         </>
       ) : (
         ""

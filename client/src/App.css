@@ -288,7 +288,7 @@ textarea {
   margin: auto;
   z-index: 202;
 }
-.overlay {
+.overlay-signup {
   position: fixed;
   top: 0;
   left: 0;
