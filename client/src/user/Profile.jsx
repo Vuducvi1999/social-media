@@ -224,7 +224,7 @@ const Profile = ({ match, jwt, ...props }) => {
       <ul className="row nav nav-tabs nav-justified">
         <div className="col-12 col-md-4 ">
           <li className="nav-item ">
-            <a className="nav-link cursor info-title-user">
+            <a className="nav-link cursor info-title-user mt-2">
               Post &nbsp;
               <span className="text-dark">
                 ({userPosts && userPosts.length})
@@ -261,7 +261,7 @@ const Profile = ({ match, jwt, ...props }) => {
         </div>
         <div className="col-12 col-md-4 ">
           <li className="nav-item ">
-            <a className="nav-link cursor info-title-user ">
+            <a className="nav-link cursor info-title-user mt-2 ">
               Following &nbsp;
               <span className="text-dark">
                 ({user.following && user.following.length})
@@ -295,7 +295,7 @@ const Profile = ({ match, jwt, ...props }) => {
         </div>
         <div className="col-12 col-md-4 ">
           <li className="nav-item ">
-            <a className="nav-link cursor info-title-user ">
+            <a className="nav-link cursor info-title-user mt-2 ">
               Followers &nbsp;
               <span className="text-dark">
                 ({user.followers && user.followers.length})

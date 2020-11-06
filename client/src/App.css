@@ -59,6 +59,7 @@
 
 .button-container {
   width: 70%;
+  flex-wrap: wrap;
 }
 
 .about-profile {
@@ -84,6 +85,7 @@
   font-weight: bold !important;
   padding: 0.5rem 0 !important;
   color: #009688 !important;
+  background-color: antiquewhite;
 }
 .litle-avatar {
   border-radius: 50%;
@@ -336,6 +338,9 @@ textarea {
   }
   .nav-mobile {
     display: none;
+  }
+  .info-title-user {
+    background: none;
   }
 }
 @media screen and (min-width: 990px) {

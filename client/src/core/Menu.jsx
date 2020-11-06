@@ -85,18 +85,35 @@ const Menu = ({ jwt, dispatch, ...props }) => {
 
         {clickBar && (
           <nav className="nav d-inline nav-tabs bg-primary">
-            <NavLink exact={true} className="nav-link p-3" to="/">
+            <NavLink
+              exact={true}
+              className="nav-link p-3"
+              to="/"
+              onClick={() => setClickBar(!clickBar)}
+            >
               Home
             </NavLink>
-            <NavLink className="nav-link p-3" to="/users">
+            <NavLink
+              className="nav-link p-3"
+              to="/users"
+              onClick={() => setClickBar(!clickBar)}
+            >
               users
             </NavLink>
             {!jwt.user._id ? (
               <>
-                <NavLink className="nav-link p-3" to="/signup">
+                <NavLink
+                  className="nav-link p-3"
+                  to="/signup"
+                  onClick={() => setClickBar(!clickBar)}
+                >
                   Sign up
                 </NavLink>
-                <NavLink className="nav-link p-3" to="/signin">
+                <NavLink
+                  className="nav-link p-3"
+                  to="/signin"
+                  onClick={() => setClickBar(!clickBar)}
+                >
                   Sign in
                 </NavLink>
               </>
@@ -105,12 +122,17 @@ const Menu = ({ jwt, dispatch, ...props }) => {
             )}
             {jwt.user._id && (
               <>
-                <NavLink to={`/post/create`} className="nav-link p-3">
+                <NavLink
+                  to={`/post/create`}
+                  className="nav-link p-3"
+                  onClick={() => setClickBar(!clickBar)}
+                >
                   Create Post
                 </NavLink>
                 <NavLink
                   to={`/profile/${jwt.user._id}`}
                   className="nav-link p-3"
+                  onClick={() => setClickBar(!clickBar)}
                 >
                   Profile
                 </NavLink>
@@ -122,6 +144,7 @@ const Menu = ({ jwt, dispatch, ...props }) => {
                       type: GET_USER,
                       payload: { jwt: "", user: {} },
                     });
+                    setClickBar(!clickBar);
                   }}
                   className="nav-link p-3 cursor"
                 >
