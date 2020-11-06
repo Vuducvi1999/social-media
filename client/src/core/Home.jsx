@@ -15,13 +15,12 @@ function Home({ posts, ...props }) {
     const res = [];
     for (let i = 1; i < temp + 1; i++) res.push(i);
     setPages(res);
-    console.log(res);
   }, [posts]);
 
   const renderPost = () => (
     <>
       <div className="col-12 d-flex">
-        <div class="card-columns">
+        <div className="card-columns">
           {posts.length !== 0 &&
             posts.slice((pagination - 1) * 8, pagination * 8).map((p) => (
               <div

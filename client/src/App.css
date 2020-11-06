@@ -298,6 +298,28 @@ textarea {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.nav-pc {
+  display: none;
+}
+.nav-mobile {
+  display: flex;
+}
+.nav-mobile .nav-link {
+  border: none;
+  text-align: center;
+  border-top: 1px solid #fff;
+}
+.nav-mobile .nav-link:hover {
+  color: #ccc;
+}
+.nav-mobile .nav-link.active {
+  color: #ccc !important;
+}
+.fa.fa-bars {
+  font-size: 2rem;
+  border: none;
+}
+
 @media (min-width: 576px) {
   .card-columns {
     column-count: 2;
@@ -308,6 +330,12 @@ textarea {
   } */
   .container-title {
     height: 40vh;
+  }
+  .nav-pc {
+    display: flex;
+  }
+  .nav-mobile {
+    display: none;
   }
 }
 @media screen and (min-width: 990px) {

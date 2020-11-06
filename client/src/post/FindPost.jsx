@@ -14,7 +14,7 @@ const FindPost = ({ jwt, ...props }) => {
   const renderPost = () => (
     <>
       <div className="col-12 d-flex">
-        <div class="card-columns">
+        <div className="card-columns">
           {result.length !== 0 &&
             result.slice((pagination - 1) * 3, pagination * 3).map((p) => (
               <div
